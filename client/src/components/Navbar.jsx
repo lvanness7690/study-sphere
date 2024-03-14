@@ -1,20 +1,15 @@
 import React from 'react';
 
-const Navbar = ({ isLoggedIn, onLogout, onOpenAuthModal }) => {
+const Navbar = ({ onLoginClick }) => {
   return (
-    <nav className="navbar">
-      <div className="navbar-logo">StudySphere</div>
-      <div className="navbar-menu">
-        {!isLoggedIn ? (
-          <button className="navbar-button" onClick={onOpenAuthModal}>Login/Register</button>
-        ) : (
-          <div>
-            <button className="navbar-profile-button">Profile</button>
-            <button className="navbar-logout-button" onClick={onLogout}>Logout</button>
-          </div>
-        )}
-      </div>
-    </nav>
+    <>
+      <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px' }}>
+        <div style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>StudySphere</div>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <button style={{ marginLeft: '10px' }} onClick={onLoginClick}>Login/Register</button>
+        </div>
+      </nav>
+    </>
   );
 };
 

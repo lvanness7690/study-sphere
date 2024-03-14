@@ -1,5 +1,5 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import React, { useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -10,7 +10,6 @@ import AuthModal from "./components/AuthModal";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Topic from "./pages/Topic";
-import Profile from "./components/Profile";
 
 const httpLink = createHttpLink({
   uri: "/graphql",
@@ -32,16 +31,16 @@ const client = new ApolloClient({
 });
 
 function App() {
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
   return (
     <ApolloProvider client={client}>
       <Router>
-        <Navbar />
-        <AuthModal />
-        <Profile />
+        <Navbar onLoginClick={() => setIsAuthModalOpen(true)} />
+        <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/topic/:topicId" element={<Topic />} />
-          <Route path="/*" element={<Navigate to="/" />} />
         </Routes>
         <Footer />
       </Router>
