@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 const AuthModal = ({ isOpen, onClose }) => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(true);
@@ -11,19 +12,88 @@ const AuthModal = ({ isOpen, onClose }) => {
   };
 
   const handleRegister = () => {
-    console.log('Registering with email:', email, 'and password:', password);
+    console.log('Registering with name:', name, 'email:', email, 'and password:', password);
     onClose();
   };
 
+  // CSS-in-JS styles
+  const modalStyle = {
+    display: isOpen ? 'flex' : 'none', // Use flex to center the modal content
+    position: 'fixed', // Fixed position to stay in place upon scrolling
+    top: 0,
+    left: 0,
+    width: '100%', // Full width to cover the entire viewport
+    height: '100%', // Full height to cover the entire viewport
+    justifyContent: 'center', // Center horizontally
+    alignItems: 'center', // Center vertically
+    backgroundColor: 'rgba(0,0,0,0.5)', // Semi-transparent background
+  };
+
+  const modalContentStyle = {
+    padding: '20px',
+    background: '#fff',
+    borderRadius: '5px',
+    width: '30%', // Adjusted for a more modal-like appearance
+    maxWidth: '500px', // Maximum width, prevents it from being too wide on larger screens
+    minHeight: '200px', // Minimum height to ensure it doesn't look too small
+    display: 'flex', // Using flex to organize the content
+    flexDirection: 'column', // Stack the children vertically
+    alignItems: 'center', // Align items in the center of the modal content
+    gap: '10px', // Adds a gap between items
+  };
+
+  const inputStyle = {
+    width: '80%', // Makes input take 80% of the modal content width
+    padding: '10px', // Adds some padding inside the input fields
+    margin: '5px 0', // Adds some margin around each input field
+    borderRadius: '5px', // Rounds the corners of the input fields
+    border: '1px solid #ccc', // Adds a subtle border
+  };
+
+  const buttonStyle = {
+    backgroundColor: '#007bff',
+    color: 'white',
+    padding: '10px 15px',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    width: '80%', // Match input width for consistency
+  };
+
   return (
-    <div className={`modal ${isOpen ? 'show' : 'hide'}`} style={{ display: isOpen ? 'block' : 'none' }}>
-      <div className="modal-content">
-        <span className="close" onClick={onClose}>&times;</span>
-        <h2>{isLogin ? 'Log In' : 'Register'}</h2> {/* Corrected Line */}
-        <input type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button onClick={isLogin ? handleLogin : handleRegister}>{isLogin ? 'Log In' : 'Register'}</button>
-        <p onClick={() => setIsLogin(!isLogin)}>{isLogin ? 'Don\'t have an account? Register' : 'Already have an account? Log In'}</p>
+    <div style={modalStyle}>
+      <div className="modal-content" style={modalContentStyle}>
+        <span className="close" onClick={onClose} style={{cursor: 'pointer', alignSelf: 'flex-end', fontSize: '20px'}}>&times;</span>
+        <h2>{isLogin ? 'Log In' : 'Register'}</h2>
+        {!isLogin && (
+          <input
+            style={inputStyle}
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        )}
+        <input
+          style={inputStyle}
+          type="text"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          style={inputStyle}
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button style={buttonStyle} onClick={isLogin ? handleLogin : handleRegister}>
+          {isLogin ? 'Log In' : 'Register'}
+        </button>
+        <p onClick={() => setIsLogin(!isLogin)} style={{cursor: 'pointer'}}>
+          {isLogin ? 'Don\'t have an account? Register' : 'Already have an account? Log In'}
+        </p>
       </div>
     </div>
   );

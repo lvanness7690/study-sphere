@@ -1,5 +1,4 @@
 // server/schemas/typeDefs.js
-
 const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
@@ -20,6 +19,7 @@ const typeDefs = gql`
     id: ID!
     username: String!
     email: String!
+    password: String! @deprecated(reason: "This field should not be accessible via GraphQL queries.")
   }
 
   type Topic {
