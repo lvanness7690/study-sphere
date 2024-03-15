@@ -7,7 +7,7 @@ const { ApolloServer } = require("apollo-server-express");
 const { typeDefs, resolvers } = require("./schemas");
 const { authMiddleware } = require("./utils/auth");
 
-const seedDB = require('./server/seeds/seedDB'); // Import the seedDB function
+const seedDB = require('./seeds/seedDB'); // Import the seedDB function
 
 const app = express();
 
