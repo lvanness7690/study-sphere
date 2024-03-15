@@ -20,15 +20,15 @@ const Topic = () => {
   const posts = postsData.postsByTopic;
 
   return (
-    <div style={{ textAlign: 'center', margin: '0 auto', maxWidth: '800px', padding: '20px' }}>
+    <div style={styles.container}>
       <h2>{topic.title}</h2>
       <p>{topic.description}</p>
-      <div>
+      <div style={styles.postsContainer}>
         {posts && posts.length > 0 ? (
           posts.map((post) => (
-            <div key={post.id}>
+            <div key={post.id} style={styles.post}>
               <p>{post.content}</p>
-              {/* Render other post details here */}
+              <button style={styles.commentButton}>Comment</button>
             </div>
           ))
         ) : (
@@ -37,6 +37,36 @@ const Topic = () => {
       </div>
     </div>
   );
+};
+
+const styles = {
+  container: {
+    textAlign: 'center',
+    margin: '0 auto',
+    maxWidth: '800px',
+    padding: '20px',
+  },
+  postsContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  post: {
+    border: '1px solid #ccc',
+    borderRadius: '5px',
+    padding: '10px',
+    margin: '10px',
+    maxWidth: '600px',
+  },
+  commentButton: {
+    background: '#007bff',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '5px',
+    padding: '5px 10px',
+    cursor: 'pointer',
+    marginTop: '10px',
+  },
 };
 
 export default Topic;
