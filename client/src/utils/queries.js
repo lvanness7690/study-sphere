@@ -7,6 +7,7 @@ export const GET_TOPICS = gql`
       title
       description
       imageUrl
+      facts
     }
   }
 `;
@@ -17,6 +18,8 @@ export const GET_TOPIC_BY_ID = gql`
       id
       title
       description
+      imageUrl
+      facts
     }
   }
 `;

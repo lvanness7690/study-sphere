@@ -32,6 +32,7 @@ export const ADD_TOPIC = gql`
       id
       title
       description
+      facts
     }
   }
 `;

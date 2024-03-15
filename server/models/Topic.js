@@ -12,10 +12,14 @@ const topicSchema = new Schema({
     type: String,
     required: true,
   },
-  imageUrl: { // Added this line
+  imageUrl: {
     type: String,
-    required: true, // Set to false if the imageUrl is not mandatory
+    required: true,
   },
+  facts: [{ // Adding facts as an array of strings
+    type: String,
+    required: true,
+  }],
 });
 
 const Topic = mongoose.model('Topic', topicSchema);
