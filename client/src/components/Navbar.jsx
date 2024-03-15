@@ -1,43 +1,48 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
+import logo from '../assets/Study-Sphere-Horizontal.png'; // Adjust the path as needed
 
 const Navbar = ({ onLoginClick }) => {
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
-  // Define the styles for the navbar and button
   const navbarStyle = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '10px',
-    backgroundColor: '#007bff', // Blue background
-    color: 'white', // White font color
-    position: 'fixed', // Change to fixed position
-    top: 0, // Stick to the top
-    width: '100%', // Ensure full width
-    zIndex: 1000, // Ensure it's above other elements
+    backgroundColor: '#000000',
+    color: 'white',
+    position: 'fixed',
+    top: 0,
+    width: '100%',
+    zIndex: 1000,
   };
 
   const buttonStyle = {
     marginLeft: '10px',
-    backgroundColor: '#28a745', // Green background
-    color: 'white', // White text
+    backgroundColor: '#28a745',
+    color: 'white',
     padding: '10px 15px',
     border: 'none',
-    borderRadius: '5px', // Rounded corners
+    borderRadius: '5px',
     cursor: 'pointer',
+  };
+
+  // Ensure your image style maintains appropriate sizing and cursor behavior
+  const logoStyle = {
+    cursor: 'pointer',
+    maxHeight: '50px', // Adjust as needed to fit the navbar
   };
 
   return (
     <>
       <nav style={navbarStyle}>
-        {/* Wrapped StudySphere in a div and added onClick event to navigate to /home */}
-        <div style={{ fontWeight: 'bold', fontSize: '1.5rem', cursor: 'pointer' }} onClick={() => navigate('/home')}>StudySphere</div>
+        {/* Replace div with img tag for the logo */}
+        <img src={logo} style={logoStyle} alt="StudySphere Logo" onClick={() => navigate('/home')} />
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <button style={buttonStyle} onClick={onLoginClick}>Login/Register</button>
         </div>
       </nav>
-      {/* Add padding to your content to prevent it from being hidden behind the navbar */}
       <div style={{ paddingTop: '60px' }}>
         {/* Your content goes here */}
       </div>
