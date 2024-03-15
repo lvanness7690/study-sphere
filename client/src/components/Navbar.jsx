@@ -1,6 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const Navbar = ({ onLoginClick }) => {
+  const navigate = useNavigate(); // Initialize useNavigate
+
   // Define the styles for the navbar and button
   const navbarStyle = {
     display: 'flex',
@@ -28,7 +31,8 @@ const Navbar = ({ onLoginClick }) => {
   return (
     <>
       <nav style={navbarStyle}>
-        <div style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>StudySphere</div>
+        {/* Wrapped StudySphere in a div and added onClick event to navigate to /home */}
+        <div style={{ fontWeight: 'bold', fontSize: '1.5rem', cursor: 'pointer' }} onClick={() => navigate('/home')}>StudySphere</div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <button style={buttonStyle} onClick={onLoginClick}>Login/Register</button>
         </div>
