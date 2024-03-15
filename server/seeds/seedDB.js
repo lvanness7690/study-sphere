@@ -1,9 +1,10 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const { User, Topic, Post, Comment } = require('../models');
 
-// Replace "myDatabase" with the name of your actual database
-const dbURI = 'mongodb://localhost:27017/myDatabase';
+// Get the MongoDB URI from environment variables or use the default local URI
+const dbURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/myDatabase';
 
 const seedDB = async () => {
   await mongoose.connect(dbURI, {

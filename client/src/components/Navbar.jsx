@@ -9,6 +9,10 @@ const Navbar = ({ onLoginClick }) => {
     padding: '10px',
     backgroundColor: '#007bff', // Blue background
     color: 'white', // White font color
+    position: 'fixed', // Change to fixed position
+    top: 0, // Stick to the top
+    width: '100%', // Ensure full width
+    zIndex: 1000, // Ensure it's above other elements
   };
 
   const buttonStyle = {
@@ -29,6 +33,10 @@ const Navbar = ({ onLoginClick }) => {
           <button style={buttonStyle} onClick={onLoginClick}>Login/Register</button>
         </div>
       </nav>
+      {/* Add padding to your content to prevent it from being hidden behind the navbar */}
+      <div style={{ paddingTop: '60px' }}>
+        {/* Your content goes here */}
+      </div>
     </>
   );
 };

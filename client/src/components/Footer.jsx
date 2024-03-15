@@ -7,9 +7,9 @@ const Footer = () => {
     padding: '20px 0',
     backgroundColor: '#f8f9fa', // Light gray background, adjust as needed
     textAlign: 'center', // Center-align the text
-    position: 'absolute', // Optional: to stick at the bottom of the page
-    bottom: 0, // Works with position: absolute
-    left: 0, // Works with position: absolute
+    position: 'fixed', // Change to fixed position
+    bottom: 0,
+    left: 0,
   };
 
   const footerContentStyle = {
