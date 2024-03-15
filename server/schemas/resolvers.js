@@ -1,4 +1,3 @@
-// server/schemas/resolvers.js
 const { User, Topic, Post, Comment } = require('../models');
 const { signToken, AuthenticationError } = require('../utils/auth');
 
@@ -6,6 +5,8 @@ const resolvers = {
   Query: {
     topics: async () => Topic.find(),
     topic: async (_, { topicId }) => Topic.findById(topicId),
+    postsByTopic: async (_, { topicId }) => Post.find({ topic: topicId }), // Fetch posts by topic ID
+    commentsByPost: async (_, { postId }) => Comment.find({ post: postId }), // Fetch comments by post ID
   },
 
   Mutation: {
@@ -29,11 +30,15 @@ const resolvers = {
     },
 
     addPost: async (_, { topicId, content }) => {
-      return Post.create({ topic: topicId, content });
+      const post = await Post.create({ topic: topicId, content });
+      // Optional: Update the topic to include this post, if your schema requires
+      return post;
     },
 
     addComment: async (_, { postId, content }) => {
-      return Comment.create({ post: postId, content });
+      const comment = await Comment.create({ post: postId, content });
+      // Optional: Update the post to include this comment, if your schema requires
+      return comment;
     },
   },
 };
