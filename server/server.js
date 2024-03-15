@@ -7,6 +7,8 @@ const { ApolloServer } = require("apollo-server-express");
 const { typeDefs, resolvers } = require("./schemas");
 const { authMiddleware } = require("./utils/auth");
 
+const seedDB = require('./server/seeds/seedDB'); // Import the seedDB function
+
 const app = express();
 
 // Dynamically set the MongoDB URI based on the environment
@@ -40,6 +42,9 @@ app.get("*", (req, res) => {
 const startApolloServer = async () => {
   await server.start();
   server.applyMiddleware({ app });
+
+  // Seed the database
+  await seedDB();
 
   app.listen(PORT, () => {
     console.log(`API server running on port ${PORT}!`);
