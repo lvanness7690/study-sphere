@@ -27,6 +27,7 @@ const typeDefs = gql`
     id: ID!
     title: String!
     description: String!
+    imageUrl: String!
     posts: [Post]!  # Assuming you might want to access posts directly from a topic
   }
 

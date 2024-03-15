@@ -6,6 +6,7 @@ export const GET_TOPICS = gql`
       id
       title
       description
+      imageUrl
     }
   }
 `;

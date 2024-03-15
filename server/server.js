@@ -10,7 +10,7 @@ const { authMiddleware } = require("./utils/auth");
 const app = express();
 
 // Dynamically set the MongoDB URI based on the environment
-const mongoURI = process.env.NODE_ENV === 'production' ? process.env.MONGODB_URI : 'mongodb://localhost:27017/myDatabase';
+const mongoURI = process.env.NODE_ENV === 'production' ? process.env.MONGODB_URI : 'mongodb://localhost:27017/studySphereDataBase';
 
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log(`Connected to MongoDB at ${mongoURI}`))

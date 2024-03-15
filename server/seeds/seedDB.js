@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const { User, Topic, Post, Comment } = require('../models');
 
 // Get the MongoDB URI from environment variables or use the default local URI
-const dbURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/myDatabase';
+const dbURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/studySphereDataBase';
 
 const seedDB = async () => {
   await mongoose.connect(dbURI, {
@@ -21,10 +21,26 @@ const seedDB = async () => {
     await Comment.deleteMany({});
 
     const topics = [
-      { title: 'MongoDB', description: 'MongoDB is a NoSQL database.' },
-      { title: 'Express', description: 'Express is a web application framework for Node.js.' },
-      { title: 'React', description: 'React is a front-end JavaScript library for building user interfaces.' },
-      { title: 'Node', description: 'Node.js is a JavaScript runtime built on Chrome\'s V8 JavaScript engine.' },
+      { 
+        title: 'MongoDB',
+        description: 'MongoDB is a NoSQL, document-oriented database known for flexibility, scalability, and performance, featuring sharding, replication, a rich query language, and indexing.',
+        imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/MongoDB_Logo.svg/2560px-MongoDB_Logo.svg.png'
+      },
+      { 
+        title: 'Express',
+        description: 'Express is a Node.js web application framework that simplifies server-side development with features for handling requests, routing, and integrating with other Node.js modules.',
+        imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png'
+      },
+      { 
+        title: 'React',
+        description: 'React is a front-end library for building user interfaces with reusable components, offering efficient rendering through its virtual DOM and component-based architecture.',
+        imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png'
+      },
+      { 
+        title: 'Node',
+        description: 'Node.js is a JavaScript runtime for server-side development, featuring a non-blocking, event-driven architecture for building scalable network and real-time applications.',
+        imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/2560px-Node.js_logo.svg.png'
+      },
     ];
 
     await Topic.insertMany(topics);

@@ -12,6 +12,10 @@ const topicSchema = new Schema({
     type: String,
     required: true,
   },
+  imageUrl: { // Added this line
+    type: String,
+    required: true, // Set to false if the imageUrl is not mandatory
+  },
 });
 
 const Topic = mongoose.model('Topic', topicSchema);
