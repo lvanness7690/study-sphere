@@ -6,7 +6,6 @@ const mongoose = require("mongoose");
 const { ApolloServer } = require("apollo-server-express");
 const { typeDefs, resolvers } = require("./schemas");
 const { authMiddleware } = require("./utils/auth");
-const seedDB = require("./seeds/seedDB"); // Require the seeding script
 
 const app = express();
 
@@ -14,11 +13,7 @@ const app = express();
 const mongoURI = process.env.NODE_ENV === 'production' ? process.env.MONGODB_URI : 'mongodb://localhost:27017/myDatabase';
 
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    console.log(`Connected to MongoDB at ${mongoURI}`);
-    // Call the seeding script after successfully connecting to MongoDB
-    seedDB();
-  })
+  .then(() => console.log(`Connected to MongoDB at ${mongoURI}`))
   .catch(err => console.error('MongoDB connection error:', err));
 
 const server = new ApolloServer({
