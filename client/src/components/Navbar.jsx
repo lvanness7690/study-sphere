@@ -1,10 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo from '../assets/Study-Sphere-Horizontal.png'; // Adjust the path as needed
+import logo from '../assets/Study-Sphere-Horizontal.png';
 
-const Navbar = ({ onLoginClick }) => {
+const Navbar = ({ onLoginClick, onProfileClick, user }) => {
   const navigate = useNavigate();
 
+  // Styling for the Navbar
   const navbarStyle = {
     display: 'flex',
     justifyContent: 'space-between',
@@ -18,6 +19,7 @@ const Navbar = ({ onLoginClick }) => {
     zIndex: 1000,
   };
 
+  // Styling for the buttons
   const buttonStyle = {
     marginLeft: '10px',
     backgroundColor: '#28a745',
@@ -28,23 +30,28 @@ const Navbar = ({ onLoginClick }) => {
     cursor: 'pointer',
   };
 
-  // Ensure your image style maintains appropriate sizing and cursor behavior
+  // Styling for the logo
   const logoStyle = {
     cursor: 'pointer',
-    maxHeight: '50px', // Adjust as needed to fit the navbar
+    maxHeight: '50px',
   };
 
   return (
     <>
       <nav style={navbarStyle}>
-        {/* Replace div with img tag for the logo */}
         <img src={logo} style={logoStyle} alt="StudySphere Logo" onClick={() => navigate('/home')} />
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <button style={buttonStyle} onClick={onLoginClick}>Login/Register</button>
+          {user ? (
+            // Show Profile button if user is logged in
+            <button style={buttonStyle} onClick={onProfileClick}>Profile</button>
+          ) : (
+            // Show Login/Register button if user is not logged in
+            <button style={buttonStyle} onClick={onLoginClick}>Login/Register</button>
+          )}
         </div>
       </nav>
       <div style={{ paddingTop: '60px' }}>
-        {/* Your content goes here */}
+        {/* Padding to ensure content is not hidden by the fixed navbar */}
       </div>
     </>
   );
