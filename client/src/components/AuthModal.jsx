@@ -27,6 +27,7 @@ const AuthModal = ({ isOpen, onClose }) => {
     justifyContent: 'center', // Center horizontally
     alignItems: 'center', // Center vertically
     backgroundColor: 'rgba(0,0,0,0.5)', // Semi-transparent background
+    zIndex: 1001, // Ensure it appears on top of other elements
   };
 
   const modalContentStyle = {
@@ -51,7 +52,7 @@ const AuthModal = ({ isOpen, onClose }) => {
   };
 
   const buttonStyle = {
-    backgroundColor: '#007bff',
+    backgroundColor: '#28a745',
     color: 'white',
     padding: '10px 15px',
     border: 'none',
