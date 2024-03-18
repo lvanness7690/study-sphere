@@ -1,34 +1,51 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import logo from '../assets/Study-Sphere-Horizontal.png'; // Adjust the path as needed
 
 const Navbar = ({ onLoginClick }) => {
-  // Define the styles for the navbar and button
+  const navigate = useNavigate();
+
   const navbarStyle = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '10px',
-    backgroundColor: '#007bff', // Blue background
-    color: 'white', // White font color
+    backgroundColor: '#000000',
+    color: 'white',
+    position: 'fixed',
+    top: 0,
+    width: '100%',
+    zIndex: 1000,
   };
 
   const buttonStyle = {
     marginLeft: '10px',
-    backgroundColor: '#28a745', // Green background
-    color: 'white', // White text
+    backgroundColor: '#28a745',
+    color: 'white',
     padding: '10px 15px',
     border: 'none',
-    borderRadius: '5px', // Rounded corners
+    borderRadius: '5px',
     cursor: 'pointer',
+  };
+
+  // Ensure your image style maintains appropriate sizing and cursor behavior
+  const logoStyle = {
+    cursor: 'pointer',
+    maxHeight: '50px', // Adjust as needed to fit the navbar
   };
 
   return (
     <>
       <nav style={navbarStyle}>
-        <div style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>StudySphere</div>
+        {/* Replace div with img tag for the logo */}
+        <img src={logo} style={logoStyle} alt="StudySphere Logo" onClick={() => navigate('/home')} />
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <button style={buttonStyle} onClick={onLoginClick}>Login/Register</button>
         </div>
       </nav>
+      <div style={{ paddingTop: '60px' }}>
+        {/* Your content goes here */}
+      </div>
     </>
   );
 };

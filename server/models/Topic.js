@@ -12,6 +12,14 @@ const topicSchema = new Schema({
     type: String,
     required: true,
   },
+  imageUrl: {
+    type: String,
+    required: true,
+  },
+  facts: [{ // Adding facts as an array of strings
+    type: String,
+    required: true,
+  }],
 });
 
 const Topic = mongoose.model('Topic', topicSchema);
