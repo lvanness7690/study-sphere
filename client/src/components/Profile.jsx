@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
+import { useNavigate } from 'react-router-dom';
 
 const Profile = ({ isOpen, onClose, user, onLogOut }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState(user ? { ...user } : {});
-  const navigate = useNavigate(); // Hook for programmatic navigation
+  const navigate = useNavigate();
 
-  // Styling for the modal overlay
+  // Modal overlay styling
   const modalStyle = {
     display: isOpen ? 'flex' : 'none',
     position: 'fixed',
@@ -17,11 +17,12 @@ const Profile = ({ isOpen, onClose, user, onLogOut }) => {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.5)',
-    zIndex: 1001, // Ensure modal is on top
+    zIndex: 1001,
   };
 
-  // Define modalContentStyle for the content inside the modal
+  // Modal content styling, with relative positioning for the close button
   const modalContentStyle = {
+    position: 'relative',
     padding: '20px',
     background: '#fff',
     borderRadius: '5px',
@@ -33,6 +34,18 @@ const Profile = ({ isOpen, onClose, user, onLogOut }) => {
     gap: '20px',
   };
 
+  // Close button styling
+  const closeButtonStyle = {
+    position: 'absolute',
+    top: '10px',
+    right: '10px',
+    cursor: 'pointer',
+    fontSize: '20px',
+    border: 'none',
+    background: 'transparent',
+    color: '#333',
+  };
+
   // Input field styling
   const inputStyle = {
     width: '80%',
@@ -42,7 +55,7 @@ const Profile = ({ isOpen, onClose, user, onLogOut }) => {
     border: '1px solid #ccc',
   };
 
-  // Button styling
+  // Button styling for edit and logout actions
   const buttonStyle = {
     backgroundColor: '#007bff',
     color: 'white',
@@ -64,18 +77,21 @@ const Profile = ({ isOpen, onClose, user, onLogOut }) => {
     marginTop: '10px',
   };
 
-  // Toggle edit mode
+  // Handle toggling between edit and view modes
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
+    if (!isEditing) {
+      setEditedUser(user);
+    }
   };
 
-  // Handle form field changes
+  // Handle input changes for user information
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedUser(prev => ({ ...prev, [name]: value }));
   };
 
-  // Enhanced logout function that navigates to home after logout
+  // Enhanced logout function to include navigation and modal closure
   const handleLogout = () => {
     onLogOut();
     navigate('/');
@@ -85,13 +101,15 @@ const Profile = ({ isOpen, onClose, user, onLogOut }) => {
   return (
     <div style={modalStyle}>
       <div style={modalContentStyle}>
-        <span className="close" onClick={onClose}>&times;</span>
+        <span style={closeButtonStyle} onClick={onClose}>&times;</span>
         <h2>{isEditing ? 'Edit Profile' : 'Profile'}</h2>
         <input style={inputStyle} type="text" placeholder="Name" value={isEditing ? editedUser.name : user?.name} onChange={handleChange} name="name" disabled={!isEditing} />
         <input style={inputStyle} type="email" placeholder="Email" value={isEditing ? editedUser.email : user?.email} onChange={handleChange} name="email" disabled={!isEditing} />
-        {isEditing && <input style={inputStyle} type="password" placeholder="New Password (optional)" onChange={handleChange} name="password" />}
+        {isEditing && (
+          <input style={inputStyle} type="password" placeholder="New Password (optional)" onChange={handleChange} name="password" />
+        )}
         {isEditing ? (
-          <button style={buttonStyle} onClick={() => {}}>Save</button> // Placeholder for save functionality
+          <button style={buttonStyle} onClick={() => setIsEditing(false)}>Save Changes</button>
         ) : (
           <button style={buttonStyle} onClick={handleEditToggle}>Edit</button>
         )}
