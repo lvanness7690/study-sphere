@@ -5,10 +5,8 @@ import { GET_TOPIC_BY_ID, GET_POSTS_BY_TOPIC } from '../utils/queries';
 import Discussion from '../components/Discussion'; // Importing Discussion modal component
 
 // Define the WherebyEmbed component
-const WherebyEmbed = ({ roomUrl, show }) => {
-    if (!show) return null; // Only render the embed if show is true
-
-    return <whereby-embed room={roomUrl} style={{ width: '100%', height: '600px' }} background="off"></whereby-embed>;
+const WherebyEmbed = ({ roomUrl }) => {
+    return <whereby-embed room={roomUrl} background="off" style={{ width: '100%', height: '600px' }} />;
 };
 
 const Topic = () => {
@@ -20,7 +18,7 @@ const Topic = () => {
     variables: { topicId, offset: 0, limit: 4 }, // Initially load 4 posts
   });
 
-  const [showWhereby, setShowWhereby] = useState(false); // State to control visibility of WherebyEmbed
+  const [showEmbed, setShowEmbed] = useState(false); // State to control visibility of Whereby embed
   const [showDiscussionModal, setShowDiscussionModal] = useState(false); // State to control visibility of Discussion modal
   const [selectedPost, setSelectedPost] = useState(null); // State to store the selected post for Discussion modal
   const [loadedPosts, setLoadedPosts] = useState(4); // State to track the number of loaded posts
@@ -44,6 +42,10 @@ const Topic = () => {
       },
     });
     setLoadedPosts(prevLoadedPosts => prevLoadedPosts + 6); // Update the number of loaded posts
+  };
+
+  const handleJoinNow = () => {
+    setShowEmbed(true); // Show the embed when Join Now button is clicked
   };
 
   if (topicLoading || postsLoading) return <p>Loading...</p>;
@@ -75,14 +77,13 @@ const Topic = () => {
       {/* Live Study Room section */}
       <div style={styles.section}>
         <h3>Live Study Room</h3>
-        <p>Want to study with a partner? Click below to join a live study room to collaborate with your peers.</p>
-        {!showWhereby && (
+        {!showEmbed ? (
           <button 
-            style={{ ...styles.commentButton, backgroundColor: 'black' }}
-            onClick={() => setShowWhereby(true)}>Join Now</button>
+            style={{ ...styles.joinNowButton, backgroundColor: 'black' }} 
+            onClick={handleJoinNow}>Join Now</button>
+        ) : (
+          <WherebyEmbed roomUrl={roomUrl} />
         )}
-        {/* Render the Whereby embed conditionally */}
-        <WherebyEmbed roomUrl={roomUrl} show={showWhereby} />
       </div>
 
       {/* Question Board section */}
@@ -92,7 +93,9 @@ const Topic = () => {
       </div>
 
       {/* Start a New Discussion button */}
-      <button style={{ ...styles.newDiscussionButton, backgroundColor: 'black' }}>Start a New Discussion</button>
+      <div style={{ marginTop: '20px' }}>
+        <button style={{ ...styles.newDiscussionButton, backgroundColor: 'black' }}>Start a New Discussion</button>
+      </div>
 
       {/* Posts */}
       <div style={styles.postsContainer}>
@@ -197,6 +200,14 @@ const styles = {
     padding: '10px 15px',
     cursor: 'pointer',
     marginTop: '20px', // Adjusted margin from top
+  },
+  joinNowButton: {
+    backgroundColor: 'black', // Black color
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    padding: '10px 15px',
+    cursor: 'pointer',
   },
 };
 
