@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 import Navbar from "./components/Navbar";
 import AuthModal from "./components/AuthModal";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Topic from "./pages/Topic";
+import Welcome from "./pages/Welcome";
+import Profile from "./components/Profile";
 
+// Setting up Apollo Client
 const httpLink = createHttpLink({
   uri: "/graphql",
 });
@@ -32,14 +33,46 @@ const client = new ApolloClient({
 
 function App() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false); // State to control the visibility of the Profile modal
+
+  // Simulated user state (replace with actual authentication logic)
+  const [user, setUser] = useState({ name: "John Doe", email: "john@example.com" });
+
+  // Handler to toggle the AuthModal visibility
+  const toggleAuthModal = () => {
+    setIsAuthModalOpen(!isAuthModalOpen);
+  };
+
+  // Handler to open the Profile modal
+  const handleProfileOpen = () => {
+    setIsProfileModalOpen(true);
+  };
+
+  // Handler to simulate user logout
+  const handleLogOut = () => {
+    setUser(null); // Clear user state
+    localStorage.removeItem("id_token"); // Remove token from storage
+    setIsProfileModalOpen(false); // Close Profile modal if open
+  };
 
   return (
     <ApolloProvider client={client}>
       <Router>
-        <Navbar onLoginClick={() => setIsAuthModalOpen(true)} />
-        <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+        <Navbar 
+          onLoginClick={toggleAuthModal} 
+          onProfileClick={user ? handleProfileOpen : null} 
+          user={user}
+        />
+        <AuthModal isOpen={isAuthModalOpen} onClose={toggleAuthModal} />
+        <Profile 
+          isOpen={isProfileModalOpen} 
+          onClose={() => setIsProfileModalOpen(false)} 
+          user={user}
+          onLogOut={handleLogOut} 
+        />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Welcome onLoginClick={toggleAuthModal} />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/topic/:topicId" element={<Topic />} />
         </Routes>
         <Footer />

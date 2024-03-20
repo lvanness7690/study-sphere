@@ -1,10 +1,11 @@
-// server/schemas/typeDefs.js
 const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
   type Query {
     topics: [Topic]!
     topic(topicId: ID!): Topic!
+    postsByTopic(topicId: ID!): [Post]!  # Added to fetch posts by topic
+    commentsByPost(postId: ID!): [Comment]!  # Added to fetch comments by post
   }
 
   type Mutation {
@@ -26,12 +27,16 @@ const typeDefs = gql`
     id: ID!
     title: String!
     description: String!
+    imageUrl: String!
+    facts: [String!]! 
+    posts: [Post]!
   }
 
   type Post {
     id: ID!
     topic: Topic!
     content: String!
+    comments: [Comment]!  # Assuming you might want to access comments directly from a post
   }
 
   type Comment {
