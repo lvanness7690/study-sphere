@@ -26,8 +26,9 @@ const resolvers = {
         throw new AuthenticationError('Incorrect credentials');
       }
       // Generate JWT token for the authenticated user
-      const token = signToken(user);
-      return { token, user };
+      const token = signToken(newUser);
+      return { token, user: newUser };
+      
     },
     addTopic: async (_, { title, description }) => {
       return Topic.create({ title, description });
