@@ -11,12 +11,11 @@ const WherebyEmbed = ({ roomUrl }) => {
 };
 
 // NewDiscussionForm component
-const NewDiscussionForm = ({ onCreatePost }) => {
+const NewDiscussionForm = ({  }) => {
   const [content, setContent] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onCreatePost(content);
     setContent('');
   };
 
@@ -41,6 +40,7 @@ const { data: postsData, loading: postsLoading, error: postsError, fetchMore } =
 
 const [showEmbed, setShowEmbed] = useState(false); // State to control visibility of Whereby embed
 const [showDiscussionModal, setShowDiscussionModal] = useState(false); // State to control visibility of Discussion modal
+const [showDiscussionForm, setShowDiscussionForm] = useState(false); // State to control visibility of Discussion modal
 const [selectedPost, setSelectedPost] = useState(null); // State to store the selected post for Discussion modal
 const [loadedPosts, setLoadedPosts] = useState(4); // State to track the number of loaded posts
 
@@ -69,14 +69,6 @@ const handleJoinNow = () => {
   setShowEmbed(true); // Show the embed when Join Now button is clicked
 };
 
-const handleCreatePost = (content) => {
-  createPost({
-    variables: {
-      topicId,
-      content,
-    },
-  });
-};
 
 if (topicLoading || postsLoading) return <p>Loading...</p>;
 if (topicError) return <p>Error loading topic: {topicError.message}</p>;
@@ -126,18 +118,18 @@ return (
   <div style={{ marginTop: '20px' }}>
         <button
           style={{ ...styles.newDiscussionButton, backgroundColor: 'black' }}
-          onClick={() => setShowDiscussionModal(true)}
+          onClick={() => setShowDiscussionForm(true)}
         >
           Start a New Discussion
         </button>
       </div>
 
       {/* New Discussion Form Modal */}
-      {showDiscussionModal && (
+      {showDiscussionForm && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close" onClick={() => setShowDiscussionModal(false)}>&times;</span>
-            <NewDiscussionForm onCreatePost={handleCreatePost} />
+            <span className="close" onClick={() => setShowDiscussionForm(false)}>&times;</span>
+            <NewDiscussionForm  />
           </div>
         </div>
       )}
