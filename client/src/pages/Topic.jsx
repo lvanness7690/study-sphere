@@ -16,8 +16,6 @@ const NewDiscussionForm = ({ closeFormModal, topicId}) => {
   const [addPost ] = useMutation(ADD_POST);
   const [content, setContent] = useState('');
 
-  console.log(typeof topicId);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
