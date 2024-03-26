@@ -41,13 +41,9 @@ export const ADD_POST = gql`
   mutation AddPost($topicId: ID!, $content: String!) {
     addPost(topicId: $topicId, content: $content) {
       id
-      content
-      topic {
-        id
-        title
       }
     }
-  }
+  
 `;
 
 export const ADD_COMMENT = gql`

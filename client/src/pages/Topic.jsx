@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
+import { ADD_POST } from '../utils/mutations';
 import { GET_TOPIC_BY_ID, GET_POSTS_BY_TOPIC } from '../utils/queries';
 import Discussion from '../components/Discussion'; // Importing Discussion modal component
 import "@whereby.com/browser-sdk/embed"; // Importing Whereby embed SDK
@@ -11,18 +12,35 @@ const WherebyEmbed = ({ roomUrl }) => {
 };
 
 // NewDiscussionForm component
-const NewDiscussionForm = ({  }) => {
+const NewDiscussionForm = ({ closeFormModal, topicId}) => {
+  const [addPost ] = useMutation(ADD_POST);
   const [content, setContent] = useState('');
 
-  const handleSubmit = (e) => {
+  console.log(typeof topicId);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setContent('');
+    try {
+      await addPost({
+        variables: {
+          content: content,
+          topicId: topicId
+        }
+      });
+      // Reset the form fields after successful submission
+      setContent('');
+      // Close the discussion form modal
+      closeFormModal();
+    } catch (error) {
+      // Handle any errors from the mutation
+      console.error('Error adding topic:', error);
+    }
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Write your post here" />
+      <form onSubmit={(e)=> handleSubmit(e)}>
+        <textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Write your Post here" />
         <button type="submit">Submit</button>
       </form>
     </div>
@@ -49,7 +67,8 @@ const openDiscussionModal = (post) => {
   setShowDiscussionModal(true);
 };
 
-const handleLoadMore = () => {
+const handleLoadMore = (e) => {
+  e.preventDefault
   fetchMore({
     variables: {
       offset: loadedPosts,
@@ -65,7 +84,8 @@ const handleLoadMore = () => {
   setLoadedPosts(prevLoadedPosts => prevLoadedPosts + 6); // Update the number of loaded posts
 };
 
-const handleJoinNow = () => {
+const handleJoinNow = (e) => {
+  e.preventDefault
   setShowEmbed(true); // Show the embed when Join Now button is clicked
 };
 
@@ -114,8 +134,8 @@ return (
       <p>You can post questions about the topic, and other students can comment and provide answers and guidance.</p>
     </div>
 
-  {/* Start a New Discussion button */}
-  <div style={{ marginTop: '20px' }}>
+      {/* Start a New Discussion button */}
+      <div style={{ marginTop: '20px' }}>
         <button
           style={{ ...styles.newDiscussionButton, backgroundColor: 'black' }}
           onClick={() => setShowDiscussionForm(true)}
@@ -126,10 +146,10 @@ return (
 
       {/* New Discussion Form Modal */}
       {showDiscussionForm && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={() => setShowDiscussionForm(false)}>&times;</span>
-            <NewDiscussionForm  />
+        <div style={styles.modal}>
+          <div style={styles.modalContent}>
+            <span style={styles.closeButton} onClick={() => setShowDiscussionForm(false)}>&times;</span>
+            <NewDiscussionForm closeFormModal={() => setShowDiscussionForm(false)} topicId={topicId} />
           </div>
         </div>
       )}
@@ -144,7 +164,7 @@ return (
                 <p>{post.content}</p>
                 <button 
                   style={{ ...styles.commentButton, backgroundColor: 'black', padding: '8px 14px' }} // Adjusted for slightly smaller size
-                  onClick={() => openDiscussionModal(post)}>Open Discussion</button>
+                  onClick={() =>openDiscussionModal(post)}>Open Discussion</button>
               </div>
             );
           }
@@ -245,6 +265,30 @@ joinNowButton: {
   borderRadius: '5px',
   padding: '10px 15px',
   cursor: 'pointer',
+},
+modal: {
+  display: 'block', /* Ensure the modal is displayed */
+  position: 'fixed', /* Fixed position so it stays in the viewport */
+  zIndex: '1', /* Set z-index to display the modal above other content */
+  left: '0',
+  top: '0',
+  width: '100%', /* Full width */
+  height: '100%', /* Full height */
+  overflow: 'auto', /* Enable scrolling if the content overflows */
+  backgroundColor: 'rgba(0,0,0,0.4)', /* Semi-transparent background */
+},
+modalContent: {
+  backgroundColor: '#fefefe', /* Modal content background color */
+  margin: '15% auto', /* Center the modal vertically and horizontally */
+  padding: '20px',
+  border: '1px solid #888',
+  width: '80%', /* Set the width of the modal content */
+},
+closeButton: {
+  color: '#aaa',
+  float: 'right',
+  fontSize: '28px',
+  fontWeight: 'bold',
 },
 };
 
