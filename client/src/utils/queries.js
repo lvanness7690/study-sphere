@@ -30,7 +30,15 @@ export const GET_POSTS_BY_TOPIC = gql`
     postsByTopic(topicId: $topicId) {
       id
       content
-      # Add any other post fields you need
+    }
+  }
+`;
+
+export const GET_COMMENTS_BY_POST_ID = gql`
+  query GetCommentsByPostId($postId: ID!) {
+    commentsByPost(postId: $postId) {
+      id
+      content
     }
   }
 `;
