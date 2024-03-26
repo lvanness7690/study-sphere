@@ -19,7 +19,7 @@ const AuthModal = ({ isOpen, onClose }) => {
       email, password},
     })
     console.log(data);
-    AuthService.loginUser(data.loginUser.token);
+    AuthService.login(data.loginUser.token);
     console.log('Logging in with email:', email, 'and password:', password);
     onClose();
   };
