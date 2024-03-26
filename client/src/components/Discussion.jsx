@@ -1,14 +1,39 @@
 import React, { useState } from 'react';
+import {useMutation, useQuery} from '@apollo/client'
+import {ADD_COMMENT} from '../utils/mutations'
+import {GET_COMMENTS_BY_POST_ID} from '../utils/queries'
 
 const Discussion = ({ post, closeModal }) => {
+  const postId = post.id;
+
+  const { data: commentData, loading: commentLoading, error: commentError, refetch } = useQuery(GET_COMMENTS_BY_POST_ID, {
+    variables: { postId },
+  });
+
+  const [addComment] = useMutation(ADD_COMMENT);
   const [comment, setComment] = useState('');
 
-  const handleCommentSubmit = () => {
-    // Handle comment submission logic here
-    console.log('Comment submitted:', comment);
-    // Clear comment input after submission
-    setComment('');
+  const handleCommentSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await addComment({
+        variables: {
+          content: comment,
+          postId: postId
+        }
+      });
+       // Refetch user data to update saved books
+       await refetch();
+      // Reset the form fields after successful submission
+      setComment('');
+    } catch (error) {
+      // Handle any errors from the mutation
+      console.error('Error adding topic:', error);
+    }
   };
+
+  if (commentLoading) return <p>Loading...</p>;
+  if (commentError) return <p>Error loading topic: {commentError.message}</p>;
 
   const modalStyle = {
     display: 'flex',
@@ -71,9 +96,9 @@ const Discussion = ({ post, closeModal }) => {
           rows={4}
           cols={50}
         ></textarea>
-        <button style={buttonStyle} onClick={handleCommentSubmit}>Submit</button>
+        <button style={buttonStyle} onClick={(e) => handleCommentSubmit(e)}>Submit</button>
         {/* Render comments */}
-        {post.comments && post.comments.map((comment, index) => (
+        {commentData&& commentData.commentsByPost.map((comment, index) => (
           <div key={index} className="comment">
             <p>{comment.content}</p>
             <p>Author: {comment.author}</p>
