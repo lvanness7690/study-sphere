@@ -9,20 +9,26 @@ const AuthModal = ({ isOpen, onClose }) => {
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(true);
   const [registerUser, { error, data }] = useMutation(REGISTER_USER);
-  const [loginUser, {error,data }] = useMutation(LOGIN_USER);
+  const [loginUser, {errors,datas }] = useMutation(LOGIN_USER);
 
   const handleLogin = async () => {
+    console.log(email);
+    console.log(password);
     const {data} = await loginUser({
-      name, password,
+      variables:{
+      email, password},
     })
-    AuthService.login(data.login.token);
+    console.log(data);
+    AuthService.loginUser(data.loginUser.token);
     console.log('Logging in with email:', email, 'and password:', password);
     onClose();
   };
 
   const handleRegister = async () => { 
     const {data} = await registerUser({
+      variables: {
       username: name, email, password,
+      },
     })
       AuthService.login(data.registerUser.token);
     console.log('Registering with name:', name, 'email:', email, 'and password:', password);
