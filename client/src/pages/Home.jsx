@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_TOPICS } from '../utils/queries';
 import { useNavigate } from 'react-router-dom';
+import AuthService from '../utils/auth';
 
 const Home = () => {
   const navigate = useNavigate();

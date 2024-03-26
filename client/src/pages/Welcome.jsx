@@ -1,6 +1,8 @@
 import React from 'react';
 import logo from '../assets/Study-Sphere-Vertical.png'; // Make sure the path to your image is correct
 import backgroundSVG from '../assets/Background.jpeg';
+import AuthService from '../utils/auth';
+
 
 const Welcome = ({ onLoginClick }) => {
   return (

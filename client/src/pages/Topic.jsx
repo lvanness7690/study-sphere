@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import AuthService from '../utils/auth';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GET_TOPIC_BY_ID, GET_POSTS_BY_TOPIC } from '../utils/queries';
