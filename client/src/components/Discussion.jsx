@@ -51,20 +51,19 @@ const Discussion = ({ post, closeModal }) => {
   const modalContentStyle = {
     padding: '20px',
     background: '#fff',
-    borderRadius: '5px',
-    width: '30%',
-    maxWidth: '500px',
-    minHeight: '200px',
+    borderRadius: '10px',
+    width: '50%',
+    maxWidth: '800px',
+    height: '70%',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-    gap: '10px',
+    gap: '20px',
+    boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
   };
 
   const inputStyle = {
-    width: '80%',
+    width: '100%',
     padding: '10px',
-    margin: '5px 0',
     borderRadius: '5px',
     border: '1px solid #ccc',
   };
@@ -76,17 +75,31 @@ const Discussion = ({ post, closeModal }) => {
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
-    width: '80%',
+    width: '100%',
+  };
+
+  const commentSectionStyle = {
+    maxHeight: '300px', // Set maximum height for comments section
+    overflowY: 'auto', // Add vertical scrollbar when content exceeds maxHeight
+  };
+
+  const commentStyle = {
+    background: '#f9f9f9',
+    padding: '10px',
+    marginBottom: '10px',
+    borderRadius: '5px',
   };
 
   return (
     <div style={modalStyle}>
       <div className="modal-content" style={modalContentStyle}>
-        <span className="close" onClick={closeModal} style={{ cursor: 'pointer', alignSelf: 'flex-end', fontSize: '20px' }}>&times;</span>
-        <h2>Discussion</h2>
-        <div className="post">
-          <p style={{ fontWeight: 'bold', textAlign: 'center' }}>{post.content}</p>
-          <p style={{ fontSize: '14px', textAlign: 'center' }}>By: {post.author}</p>
+        <span className="close" onClick={closeModal} style={{ cursor: 'pointer', alignSelf: 'flex-end', fontSize: '24px' }}>
+          &times;
+        </span>
+        <h2 style={{ textAlign: 'center' }}>Discussion</h2>
+        <div className="post" style={{ textAlign: 'center' }}>
+          <p style={{ fontWeight: 'bold' }}>{post.content}</p>
+          <p style={{ fontSize: '14px' }}>By: {post.author}</p>
         </div>
         <textarea
           value={comment}
@@ -94,16 +107,21 @@ const Discussion = ({ post, closeModal }) => {
           style={inputStyle}
           placeholder="Add your comment..."
           rows={4}
-          cols={50}
         ></textarea>
-        <button style={buttonStyle} onClick={(e) => handleCommentSubmit(e)}>Submit</button>
-        {/* Render comments */}
-        {commentData&& commentData.commentsByPost.map((comment, index) => (
-          <div key={index} className="comment">
-            <p>{comment.content}</p>
-            <p>Author: {comment.author}</p>
-          </div>
-        ))}
+        <button style={buttonStyle} onClick={(e) => handleCommentSubmit(e)}>
+          Submit
+        </button>
+        {/* Comments Section */}
+        <div style={commentSectionStyle}>
+          {/* Render comments */}
+          {commentData &&
+            commentData.commentsByPost.map((comment, index) => (
+              <div key={index} style={commentStyle}>
+                <p>{comment.content}</p>
+                <p style={{ fontStyle: 'italic', fontSize: '12px' }}>By: {comment.author}</p>
+              </div>
+            ))}
+        </div>
       </div>
     </div>
   );
