@@ -65,7 +65,7 @@ function App() {
           onLogOut={handleLogOut} 
         />
         <Routes>
-          <Route path="/" element={<Welcome onLoginClick={toggleAuthModal} />} />
+          <Route path="/" element={<Welcome />} />
           <Route path="/home" element={<Home />} />
           <Route path="/topic/:topicId" element={<Topic />} />
         </Routes>
