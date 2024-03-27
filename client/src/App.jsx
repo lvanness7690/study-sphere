@@ -35,8 +35,6 @@ function App() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false); // State to control the visibility of the Profile modal
 
-  // Simulated user state (replace with actual authentication logic)
-  const [user, setUser] = useState({ name: "John Doe", email: "john@example.com" });
 
   // Handler to toggle the AuthModal visibility
   const toggleAuthModal = () => {
@@ -50,8 +48,6 @@ function App() {
 
   // Handler to simulate user logout
   const handleLogOut = () => {
-    setUser(null); // Clear user state
-    localStorage.removeItem("id_token"); // Remove token from storage
     setIsProfileModalOpen(false); // Close Profile modal if open
   };
 
@@ -60,14 +56,12 @@ function App() {
       <Router>
         <Navbar 
           onLoginClick={toggleAuthModal} 
-          onProfileClick={user ? handleProfileOpen : null} 
-          user={user}
+          onProfileClick={handleProfileOpen} 
         />
         <AuthModal isOpen={isAuthModalOpen} onClose={toggleAuthModal} />
         <Profile 
           isOpen={isProfileModalOpen} 
           onClose={() => setIsProfileModalOpen(false)} 
-          user={user}
           onLogOut={handleLogOut} 
         />
         <Routes>
