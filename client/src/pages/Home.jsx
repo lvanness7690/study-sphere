@@ -1,11 +1,21 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_TOPICS } from '../utils/queries';
 import { useNavigate } from 'react-router-dom';
+import AuthService from '../utils/auth'; 
+
 
 const Home = () => {
-  const navigate = useNavigate();
   const { loading, error, data } = useQuery(GET_TOPICS);
+
+  const navigate = useNavigate();
+
+   // Redirect to root path if not logged in
+   useEffect(() => {
+    if (!AuthService.loggedIn()) {
+      navigate('/');
+    }
+  }, [navigate]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;

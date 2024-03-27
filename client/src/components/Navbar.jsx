@@ -1,10 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/Study-Sphere-Horizontal.png';
+import AuthService from '../utils/auth';
 
-const Navbar = ({ onLoginClick, onProfileClick, user }) => {
+const Navbar = ({ onLoginClick, onProfileClick }) => {
   const navigate = useNavigate();
 
+  
   // Styling for the Navbar
   const navbarStyle = {
     display: 'flex',
@@ -41,7 +43,7 @@ const Navbar = ({ onLoginClick, onProfileClick, user }) => {
       <nav style={navbarStyle}>
         <img src={logo} style={logoStyle} alt="StudySphere Logo" onClick={() => navigate('/home')} />
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          {user ? (
+          {AuthService.loggedIn() ? (
             // Show Profile button if user is logged in
             <button style={buttonStyle} onClick={onProfileClick}>Profile</button>
           ) : (

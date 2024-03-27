@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 import { ADD_POST } from '../utils/mutations';
 import { GET_TOPIC_BY_ID, GET_POSTS_BY_TOPIC } from '../utils/queries';
 import Discussion from '../components/Discussion'; // Importing Discussion modal component
 import "@whereby.com/browser-sdk/embed"; // Importing Whereby embed SDK
+import AuthService from '../utils/auth'; 
 
 // Define the WherebyEmbed component
 const WherebyEmbed = ({ roomUrl }) => {
@@ -15,6 +16,8 @@ const WherebyEmbed = ({ roomUrl }) => {
 const NewDiscussionForm = ({ closeFormModal, topicId}) => {
   const [addPost ] = useMutation(ADD_POST);
   const [content, setContent] = useState('');
+  const [isSubmitHovered, setIsSubmitHovered] = useState(false);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,7 +26,8 @@ const NewDiscussionForm = ({ closeFormModal, topicId}) => {
         variables: {
           content: content,
           topicId: topicId
-        }
+        },
+        refetchQueries: [{ query: GET_POSTS_BY_TOPIC, variables: { topicId } }]
       });
       // Reset the form fields after successful submission
       setContent('');
@@ -36,13 +40,31 @@ const NewDiscussionForm = ({ closeFormModal, topicId}) => {
   };
 
   return (
-    <div>
+    <div style={styles.formContainer}>
       <form onSubmit={(e)=> handleSubmit(e)}>
-        <textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Write your Post here" />
-        <button type="submit">Submit</button>
+      <div style={styles.textareaContainer}>
+        <textarea 
+          style={styles.textarea} 
+          value={content} 
+          onChange={(e) => setContent(e.target.value)} 
+          placeholder="Write your Discussion Post here" 
+        />
+      </div>
+      <div style={styles.buttonContainer}>
+        <button 
+          type="submit"
+          style={{ ...styles.submitButton, ...(isSubmitHovered ? styles.submitButtonHover : null) }}
+          onMouseEnter={() => setIsSubmitHovered(true)}
+          onMouseLeave={() => setIsSubmitHovered(false)}
+        >
+          Submit
+      </button>
+        </div>
       </form>
     </div>
   );
+  
+  
 };
 
 const Topic = () => {
@@ -54,11 +76,15 @@ const { data: postsData, loading: postsLoading, error: postsError, fetchMore } =
   variables: { topicId, offset: 0, limit: 4 }, // Initially load 4 posts
 });
 
+const navigate = useNavigate();
+
 const [showEmbed, setShowEmbed] = useState(false); // State to control visibility of Whereby embed
 const [showDiscussionModal, setShowDiscussionModal] = useState(false); // State to control visibility of Discussion modal
 const [showDiscussionForm, setShowDiscussionForm] = useState(false); // State to control visibility of Discussion modal
 const [selectedPost, setSelectedPost] = useState(null); // State to store the selected post for Discussion modal
 const [loadedPosts, setLoadedPosts] = useState(4); // State to track the number of loaded posts
+const [isHovered, setIsHovered] = useState(false);
+
 
 const openDiscussionModal = (post) => {
   setSelectedPost(post);
@@ -87,6 +113,12 @@ const handleJoinNow = (e) => {
   setShowEmbed(true); // Show the embed when Join Now button is clicked
 };
 
+// Redirect to root path if not logged in
+useEffect(() => {
+  if (!AuthService.loggedIn()) {
+    navigate('/');
+  }
+}, [navigate]);
 
 if (topicLoading || postsLoading) return <p>Loading...</p>;
 if (topicError) return <p>Error loading topic: {topicError.message}</p>;
@@ -146,7 +178,9 @@ return (
       {showDiscussionForm && (
         <div style={styles.modal}>
           <div style={styles.modalContent}>
-            <span style={styles.closeButton} onClick={() => setShowDiscussionForm(false)}>&times;</span>
+            <span  style={{ ...styles.closeButton}} 
+             onClick={() => setShowDiscussionForm(false)}
+        >&times;</span>
             <NewDiscussionForm closeFormModal={() => setShowDiscussionForm(false)} topicId={topicId} />
           </div>
         </div>
@@ -265,29 +299,68 @@ joinNowButton: {
   cursor: 'pointer',
 },
 modal: {
-  display: 'block', /* Ensure the modal is displayed */
-  position: 'fixed', /* Fixed position so it stays in the viewport */
-  zIndex: '1', /* Set z-index to display the modal above other content */
+  display: 'block',
+  position: 'fixed',
+  zIndex: '1',
   left: '0',
   top: '0',
-  width: '100%', /* Full width */
-  height: '100%', /* Full height */
-  overflow: 'auto', /* Enable scrolling if the content overflows */
-  backgroundColor: 'rgba(0,0,0,0.4)', /* Semi-transparent background */
+  width: '100%',
+  height: '100%',
+  overflow: 'auto',
+  backgroundColor: 'rgba(0,0,0,0.4)',
+  borderRadius: '10px', // Rounded border for modal
 },
 modalContent: {
-  backgroundColor: '#fefefe', /* Modal content background color */
-  margin: '15% auto', /* Center the modal vertically and horizontally */
+  backgroundColor: '#fefefe',
+  margin: '15% auto',
   padding: '20px',
   border: '1px solid #888',
-  width: '80%', /* Set the width of the modal content */
+  width: '50%',
+  borderRadius: '10px', // Rounded border for modal content
 },
 closeButton: {
-  color: '#aaa',
+  color: 'red',
   float: 'right',
   fontSize: '28px',
   fontWeight: 'bold',
+  transition: 'color 0.3s', // Smooth transition for color change
+  cursor: 'pointer',
 },
+  textarea: {
+    marginBottom: '15px',
+    padding: '10px',
+    borderRadius: '5px',
+    border: '1px solid #ccc',
+    width: '80%',
+    boxSizing: 'border-box',
+    minHeight: '100px', // Ensuring minimum height for textarea
+  },
+  submitButton: {
+    backgroundColor: 'black',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    padding: '10px 15px',
+    cursor: 'pointer',
+    width: '70%',  // Ensure the button spans the full width
+  },
+  // Hover effect for submit button
+  submitButtonHover: {
+    backgroundColor: 'darkgrey',
+  },
+
+  textareaContainer: {
+    marginBottom: '15px',
+    with: '80%' // Add margin bottom to separate textarea from the button
+  },
+  buttonContainer: {
+    width: '100%', // Ensure the button spans the full width
+  },
+
+  width: '70%', // Adjust the width of the form
+  padding: '20px', // Increase the padding for the form
+  
+
 };
 
 export default Topic;
