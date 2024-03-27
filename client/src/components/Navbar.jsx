@@ -5,7 +5,6 @@ import AuthService from '../utils/auth';
 
 const Navbar = ({ onLoginClick, onProfileClick }) => {
   const navigate = useNavigate();
-
   
   // Styling for the Navbar
   const navbarStyle = {

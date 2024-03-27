@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import AuthService from '../utils/auth'
 
 const Profile = ({ isOpen, onClose, user, onLogOut }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedUser, setEditedUser] = useState(user ? { ...user } : {});
-  const navigate = useNavigate();
 
   // Modal overlay styling
   const modalStyle = {
@@ -77,24 +75,9 @@ const Profile = ({ isOpen, onClose, user, onLogOut }) => {
     marginTop: '10px',
   };
 
-  // Handle toggling between edit and view modes
-  const handleEditToggle = () => {
-    setIsEditing(!isEditing);
-    if (!isEditing) {
-      setEditedUser(user);
-    }
-  };
-
-  // Handle input changes for user information
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEditedUser(prev => ({ ...prev, [name]: value }));
-  };
-
   // Enhanced logout function to include navigation and modal closure
   const handleLogout = () => {
-    onLogOut();
-    navigate('/');
+    AuthService.logout(); // Use AuthService to logout
     onClose();
   };
 
@@ -102,17 +85,7 @@ const Profile = ({ isOpen, onClose, user, onLogOut }) => {
     <div style={modalStyle}>
       <div style={modalContentStyle}>
         <span style={closeButtonStyle} onClick={onClose}>&times;</span>
-        <h2>{isEditing ? 'Edit Profile' : 'Profile'}</h2>
-        <input style={inputStyle} type="text" placeholder="Name" value={isEditing ? editedUser.name : user?.name} onChange={handleChange} name="name" disabled={!isEditing} />
-        <input style={inputStyle} type="email" placeholder="Email" value={isEditing ? editedUser.email : user?.email} onChange={handleChange} name="email" disabled={!isEditing} />
-        {isEditing && (
-          <input style={inputStyle} type="password" placeholder="New Password (optional)" onChange={handleChange} name="password" />
-        )}
-        {isEditing ? (
-          <button style={buttonStyle} onClick={() => setIsEditing(false)}>Save Changes</button>
-        ) : (
-          <button style={buttonStyle} onClick={handleEditToggle}>Edit</button>
-        )}
+        <h2>Profile</h2>
         <button style={logOutButtonStyle} onClick={handleLogout}>Log Out</button>
       </div>
     </div>
