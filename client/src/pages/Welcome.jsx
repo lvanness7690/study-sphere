@@ -2,7 +2,7 @@ import React from 'react';
 import logo from '../assets/Study-Sphere-Vertical.png'; // Make sure the path to your image is correct
 import backgroundSVG from '../assets/Background.jpeg';
 
-const Welcome = ({ onLoginClick }) => {
+const Welcome = ( ) => {
   return (
     <div style={{
       textAlign: 'center',
@@ -34,17 +34,6 @@ const Welcome = ({ onLoginClick }) => {
             With StudySphere, learners have the opportunity to engage in meaningful academic exchanges, fostering a culture of knowledge sharing and mutual growth. The platform's intuitive design ensures that students can easily navigate and utilize the features, making online studying more effective and enjoyable.
           </p>
         </div>
-        <button onClick={onLoginClick} style={{
-          backgroundColor: '#28a745', // Green background
-          color: 'white', // White text
-          padding: '10px 15px',
-          border: 'none',
-          borderRadius: '5px', // Rounded corners
-          cursor: 'pointer',
-          marginTop: '20px',
-        }}>
-          Login/Register
-        </button>
       </div>
     </div>
   );
