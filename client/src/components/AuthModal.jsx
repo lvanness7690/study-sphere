@@ -1,54 +1,71 @@
 import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { REGISTER_USER, LOGIN_USER } from '../utils/mutations';
+import AuthService from '../utils/auth';
 
 const AuthModal = ({ isOpen, onClose }) => {
-  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(true);
 
-  const handleLogin = () => {
-    console.log('Logging in with email:', email, 'and password:', password);
-    onClose();
+  const [registerUser] = useMutation(REGISTER_USER);
+  const [loginUser] = useMutation(LOGIN_USER);
+
+  const handleLogin = async () => {
+    try {
+      const { data } = await loginUser({ variables: { email, password } });
+      console.log('Logged in user:', data.loginUser.user);
+      AuthService.login(data.loginUser.token);
+      onClose();
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
   };
 
-  const handleRegister = () => {
-    console.log('Registering with name:', name, 'email:', email, 'and password:', password);
-    onClose();
+  const handleRegister = async () => {
+    try {
+      const { data } = await registerUser({ variables: { username, email, password } });
+      console.log('Registered user:', data.registerUser.user);
+      AuthService.login(data.registerUser.token);
+      onClose();
+    } catch (error) {
+      console.error('Registration failed:', error);
+    }
   };
 
-  // CSS-in-JS styles
   const modalStyle = {
-    display: isOpen ? 'flex' : 'none', // Use flex to center the modal content
-    position: 'fixed', // Fixed position to stay in place upon scrolling
+    display: isOpen ? 'flex' : 'none',
+    position: 'fixed',
     top: 0,
     left: 0,
-    width: '100%', // Full width to cover the entire viewport
-    height: '100%', // Full height to cover the entire viewport
-    justifyContent: 'center', // Center horizontally
-    alignItems: 'center', // Center vertically
-    backgroundColor: 'rgba(0,0,0,0.5)', // Semi-transparent background
-    zIndex: 1001, // Ensure it appears on top of other elements
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    zIndex: 1001,
   };
 
   const modalContentStyle = {
     padding: '20px',
     background: '#fff',
     borderRadius: '5px',
-    width: '30%', // Adjusted for a more modal-like appearance
-    maxWidth: '500px', // Maximum width, prevents it from being too wide on larger screens
-    minHeight: '200px', // Minimum height to ensure it doesn't look too small
-    display: 'flex', // Using flex to organize the content
-    flexDirection: 'column', // Stack the children vertically
-    alignItems: 'center', // Align items in the center of the modal content
-    gap: '10px', // Adds a gap between items
+    width: '30%',
+    maxWidth: '500px',
+    minHeight: '200px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '10px',
   };
 
   const inputStyle = {
-    width: '80%', // Makes input take 80% of the modal content width
-    padding: '10px', // Adds some padding inside the input fields
-    margin: '5px 0', // Adds some margin around each input field
-    borderRadius: '5px', // Rounds the corners of the input fields
-    border: '1px solid #ccc', // Adds a subtle border
+    width: '80%',
+    padding: '10px',
+    margin: '5px 0',
+    borderRadius: '5px',
+    border: '1px solid #ccc',
   };
 
   const buttonStyle = {
@@ -58,21 +75,21 @@ const AuthModal = ({ isOpen, onClose }) => {
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
-    width: '80%', // Match input width for consistency
+    width: '80%',
   };
 
   return (
     <div style={modalStyle}>
       <div className="modal-content" style={modalContentStyle}>
-        <span className="close" onClick={onClose} style={{cursor: 'pointer', alignSelf: 'flex-end', fontSize: '20px'}}>&times;</span>
+        <span className="close" onClick={onClose} style={{ cursor: 'pointer', alignSelf: 'flex-end', fontSize: '20px' }}>&times;</span>
         <h2>{isLogin ? 'Log In' : 'Register'}</h2>
         {!isLogin && (
           <input
             style={inputStyle}
             type="text"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
         )}
         <input
@@ -92,8 +109,8 @@ const AuthModal = ({ isOpen, onClose }) => {
         <button style={buttonStyle} onClick={isLogin ? handleLogin : handleRegister}>
           {isLogin ? 'Log In' : 'Register'}
         </button>
-        <p onClick={() => setIsLogin(!isLogin)} style={{cursor: 'pointer'}}>
-          {isLogin ? 'Don\'t have an account? Register' : 'Already have an account? Log In'}
+        <p onClick={() => setIsLogin(!isLogin)} style={{ cursor: 'pointer' }}>
+          {isLogin ? 'Don\'t have an account? Sign Up' : 'Already have an account? Log In'}
         </p>
       </div>
     </div>
@@ -101,3 +118,4 @@ const AuthModal = ({ isOpen, onClose }) => {
 };
 
 export default AuthModal;
+
