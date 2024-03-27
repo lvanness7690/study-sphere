@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
+
 import { useMutation } from '@apollo/client';
 import { REGISTER_USER, LOGIN_USER } from '../utils/mutations';
 import AuthService from '../utils/auth';
+
 
 const AuthModal = ({ isOpen, onClose }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(true);
+  const [registerUser] = useMutation(REGISTER_USER);
+  const [loginUser] = useMutation(LOGIN_USER);
+
 
   const [registerUser] = useMutation(REGISTER_USER);
   const [loginUser] = useMutation(LOGIN_USER);
@@ -32,6 +37,8 @@ const AuthModal = ({ isOpen, onClose }) => {
     } catch (error) {
       console.error('Registration failed:', error);
     }
+
+
   };
 
   const modalStyle = {
