@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 import { ADD_POST } from '../utils/mutations';
 import { GET_TOPIC_BY_ID, GET_POSTS_BY_TOPIC } from '../utils/queries';
 import Discussion from '../components/Discussion'; // Importing Discussion modal component
 import "@whereby.com/browser-sdk/embed"; // Importing Whereby embed SDK
+import AuthService from '../utils/auth'; 
 
 // Define the WherebyEmbed component
 const WherebyEmbed = ({ roomUrl }) => {
@@ -75,6 +76,8 @@ const { data: postsData, loading: postsLoading, error: postsError, fetchMore } =
   variables: { topicId, offset: 0, limit: 4 }, // Initially load 4 posts
 });
 
+const navigate = useNavigate();
+
 const [showEmbed, setShowEmbed] = useState(false); // State to control visibility of Whereby embed
 const [showDiscussionModal, setShowDiscussionModal] = useState(false); // State to control visibility of Discussion modal
 const [showDiscussionForm, setShowDiscussionForm] = useState(false); // State to control visibility of Discussion modal
@@ -110,6 +113,12 @@ const handleJoinNow = (e) => {
   setShowEmbed(true); // Show the embed when Join Now button is clicked
 };
 
+// Redirect to root path if not logged in
+useEffect(() => {
+  if (!AuthService.loggedIn()) {
+    navigate('/');
+  }
+}, [navigate]);
 
 if (topicLoading || postsLoading) return <p>Loading...</p>;
 if (topicError) return <p>Error loading topic: {topicError.message}</p>;
