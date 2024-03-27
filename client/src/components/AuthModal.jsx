@@ -1,17 +1,34 @@
 import React, { useState } from 'react';
+import { REGISTER_USER, LOGIN_USER } from '../utils/mutations';
+import AuthService from '../utils/auth';
+import { useMutation } from '@apollo/client';
 
 const AuthModal = ({ isOpen, onClose }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(true);
+  const [registerUser] = useMutation(REGISTER_USER);
+  const [loginUser] = useMutation(LOGIN_USER);
 
-  const handleLogin = () => {
+
+  const handleLogin = async() => {
+    const{data} = await loginUser({
+      variables: {
+        email,password},
+    })
+    AuthService.login(data.loginUser.token);
     console.log('Logging in with email:', email, 'and password:', password);
     onClose();
   };
 
-  const handleRegister = () => {
+  const handleRegister = async() => {
+    const {data} = await registerUser({
+      variables: {
+        username: name, email, password,
+      },
+    })
+    AuthService.login(data.registerUser.token);
     console.log('Registering with name:', name, 'email:', email, 'and password:', password);
     onClose();
   };
