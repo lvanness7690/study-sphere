@@ -99,6 +99,7 @@ const Discussion = ({ post, closeModal }) => {
         <h2 style={{ textAlign: 'center' }}>Discussion</h2>
         <div className="post" style={{ textAlign: 'center' }}>
           <p style={{ fontWeight: 'bold' }}>{post.content}</p>
+          <p style={{ fontSize: '14px' }}>By: {post.author}</p>
         </div>
         <textarea
           value={comment}
@@ -117,6 +118,7 @@ const Discussion = ({ post, closeModal }) => {
             commentData.commentsByPost.map((comment, index) => (
               <div key={index} style={commentStyle}>
                 <p>{comment.content}</p>
+                <p style={{ fontStyle: 'italic', fontSize: '12px' }}>By: {comment.author}</p>
               </div>
             ))}
         </div>
