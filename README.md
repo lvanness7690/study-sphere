@@ -1,63 +1,84 @@
 # StudySphere
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![Status](https://img.shields.io/badge/Status-Live%20application-000000?style=for-the-badge)
+![Stack](https://img.shields.io/badge/Stack-MERN-000000?style=for-the-badge)
+![Focus](https://img.shields.io/badge/Focus-GraphQL-000000?style=for-the-badge)
+![Type](https://img.shields.io/badge/Type-Student%20Platform-000000?style=for-the-badge)
+
+Student collaboration platform with accounts, study resources, and saved-book workflows.
 
 ## Table of Contents
-* [Description](#description)
-* [Installation](#installation)
-* [Technologies Used](#technologies-used)
-* [Live Application](#live-application)
-* [Usage](#usage)
-* [Features](#features)
-* [Credits](#credits)
-* [License](#license)
 
-## Description
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Links](#links)
+- [Getting Started](#getting-started)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [Credits](#credits)
+- [License](#license)
 
-StudySphere is a dynamic, interactive student social network designed to revolutionize the way students connect and study together online. By integrating real-time video study groups and interactive discussion boards, StudySphere offers a unique platform for academic collaboration and peer support. It's not just about studying alone; it's about creating a community of learners who can grow together.
+## Overview
 
-## Installation
-
-To install and run StudySphere locally, follow these steps:
-
-1. Clone the repository to your local machine.
-
-
-## Technologies Used
-
-StudyShere utilizes the following technologies:
-
-- ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white): A NoSQL database used for storing user data and book information.
-- ![Express.js](https://img.shields.io/badge/Express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB): A web application framework for Node.js used for building the server-side logic.
-- ![React](https://img.shields.io/badge/React-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB): A JavaScript library for building user interfaces used for creating the front-end components.
-- ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white): A JavaScript runtime environment used for running the server-side code.
-- ![GraphQL](https://img.shields.io/badge/GraphQL-E10098?style=for-the-badge&logo=graphql&logoColor=white): A query language for APIs used for querying and manipulating data.
-- ![Apollo Server](https://img.shields.io/badge/Apollo_Server-311C87?style=for-the-badge&logo=apollo-server&logoColor=white): A GraphQL server used for handling GraphQL requests and responses.
-
-
-## Live Application
-
-[StudySphere](https://study-sphere.net)
-
-## Usage
-
-Upon accessing the application, users can perform the following actions:
-
-- Sign up for a new account or log in to an existing account.
-- Search for books using the Google Books API.
-- View search results with book titles, authors, descriptions, images, and links to Google Books.
-- Save books to their account for future reference.
-- View their saved books list and remove books from it.
-- Log out from their account.
+A MERN/GraphQL application for searching study resources, managing user accounts, and saving books or learning materials to a user profile.
 
 ## Features
 
-StudySphere offers the following features:
+- 🔐 User authentication
+- 🔎 Google Books search
+- 📚 Saved resources workflow
+- 🧠 GraphQL API layer
+- ⚛️ React client experience
+- 🗃️ MongoDB persistence
+
+## Tech Stack
+
+- MongoDB
+- Express
+- React
+- Node.js
+- GraphQL
+- Apollo Server
+- JWT
+
+## Links
+
+- Repository: [https://github.com/lvanness7690/study-sphere](https://github.com/lvanness7690/study-sphere)
+- Live application: [https://study-sphere.net](https://study-sphere.net)
+
+## Getting Started
+
+1. `npm install`
+2. `Configure server/client environment variables`
+3. `npm run develop`
+4. `npm run build`
+
+Common scripts:
+
+- `npm run start`
+- `npm run develop`
+- `npm run install`
+- `npm run build`
+
+## Usage
+
+Create an account, search Google Books, and save resources to a user profile.
+
+## Project Structure
+
+- `LICENSE.txt`
+- `README.md`
+- `client`
+- `package-lock.json`
+- `package.json`
+- `server`
+- `steph changes`
 
 ## Credits
 
-Developed by Leighton Van Ness, Kevin Pierce, Stephanie Nunez & Giovanni Strangio
+Developed and maintained by Leighton Van Ness. Additional project collaboration by Kevin Pierce, Stephanie Nunez, and Giovanni Strangio.
 
 ## License
 
-Please refer to the license in the repo.
+This project is licensed under the MIT license. See the license file in the repository for details.
